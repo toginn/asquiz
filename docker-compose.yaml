@@ -1,0 +1,81 @@
+version: '3'
+
+services:
+  api:
+    image: node:18-alpine
+    container_name: api
+    restart: always
+    environment:
+      API_URL: http://localhost:5000
+      CORS_ALLOW_URL: http://localhost:3000
+      DB_NAME: asquiz
+      DB_URI: mongodb://root:password@mongo:27017
+      FRONT_URL: http://localhost:3000
+      EMAIL_TOKEN_SECRET: 12345678901234567890123456789012xxxx
+      SESSION_SECRET: 12345678901234567890123456789012xxxx
+      SESSION_SALT: 1234567890123456
+      SMTP_ADDRESS:  # set your smtp account
+      SMTP_PASSWORD: # set your smtp account
+      SMTP_SERVICE:  # set your smtp account
+      SMTP_USERNAME: # set your smtp account
+      PORT: 5000
+      COMMENTS_COLLECTION_NAME: comments
+      QUESTIONSS_COLLECTION_NAME: questions
+      USERS_COLLECTION_NAME: users
+    command: >
+      sh -c "
+        yarn install &&
+        npm run build &&
+        chmod +x ./start.js &&
+        node ./start.js
+      "
+    volumes:
+      - ./api:/app
+    working_dir: /app
+    ports:
+      - 5000:5000
+
+  front:
+    image: node:18-alpine
+    container_name: front
+    restart: always
+    command: >
+      sh -c "
+        yarn install &&
+        npm start
+      "
+    volumes:
+      - ./front:/app
+    working_dir: /app
+    ports:
+      - 3000:3000
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 5001:27017
+    volumes:
+      - mongo:/data/db
+      - mongo:/data/configdb
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+    depends_on:
+      - mongo
+
+volumes:
+  mongo:
