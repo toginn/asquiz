@@ -45,7 +45,7 @@ $ docker compose up -d
 
 現代のWebアプリ開発に通用するモダンな技術を使用しました。
 使用技術だけでなく、設計や保守性という観点から、**ドメイン駆動設計**と**型駆動開発**を中心に開発しました。
-バックエンドのRestful APIはオブジェクト指向設計を用いています。
+バックエンドのRESTful APIはオブジェクト指向設計を用いています。
 
 ## Frontend
 
@@ -58,9 +58,9 @@ Material UIによるレスポンシブデザインを意識しました。
 
 **TypeScript + Node.js + Fastify**
 
-Node.jsベースのRestful APIをHerokuにデプロイしています。
+Node.jsベースのRESTful APIをHerokuにデプロイしています。
 
-## Infastructure
+## Infrastructure
 
 **Netlify + Heroku + MongoDB Atlas + onamae.com + SendGrid + Jest**
 
